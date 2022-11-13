@@ -102,6 +102,37 @@
           }
         }
       }
+    },
+    "ngx-spa-honeypot": {
+      "projectType": "library",
+      "root": "projects/ngx-spa-honeypot",
+      "sourceRoot": "projects/ngx-spa-honeypot/src",
+      "prefix": "mh",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-spa-honeypot/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-spa-honeypot/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-spa-honeypot/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-spa-honeypot/src/test.ts",
+            "tsConfig": "projects/ngx-spa-honeypot/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-spa-honeypot/karma.conf.js"
+          }
+        }
+      }
     }
   }
 }
