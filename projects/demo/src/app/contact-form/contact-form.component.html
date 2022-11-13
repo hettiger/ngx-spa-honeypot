@@ -1,8 +1,11 @@
 <form [formGroup]="contactForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="shipping-card">
-    <mat-card-header>
-      <mat-card-title>Contact Form</mat-card-title>
-    </mat-card-header>
+  <mat-card>
+    <mat-card-title>
+      Contact Form
+    </mat-card-title>
+    <mat-card-subtitle>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum debitis dolor earum maiores modi quos. Dicta dolore magni veritatis. Amet asperiores cupiditate ipsam molestias nulla officiis perferendis quis ratione voluptate.
+    </mat-card-subtitle>
     <mat-card-content>
       <div class="row">
         <div class="col">
@@ -56,7 +59,8 @@
         </div>
       </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions align="end">
+      <button mat-raised-button type="reset">Reset</button>
       <button mat-raised-button color="primary" type="submit">Submit</button>
     </mat-card-actions>
   </mat-card>
