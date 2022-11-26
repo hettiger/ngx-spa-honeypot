@@ -1,16 +1,23 @@
 import { NgModule } from '@angular/core';
-import { NgxSpaHoneypotComponent } from './ngx-spa-honeypot.component';
-
-
+import { FormTokenDirective } from './form-token.directive';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 
 @NgModule({
   declarations: [
-    NgxSpaHoneypotComponent
+    FormTokenDirective,
   ],
-  imports: [
+  imports: [],
+  providers: [
+    FormTokenHttpInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useExisting: FormTokenHttpInterceptor,
+      multi: true,
+    },
   ],
   exports: [
-    NgxSpaHoneypotComponent
+    FormTokenDirective,
   ]
 })
-export class NgxSpaHoneypotModule { }
+export class NgxSpaHoneypotModule {}
