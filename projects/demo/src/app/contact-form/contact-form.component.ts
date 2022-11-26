@@ -8,6 +8,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ContactFormComponent {
   contactForm = this.fb.group({
+    honey: [null],
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
     email: [null, Validators.compose([Validators.required, Validators.email])],

@@ -25,3 +25,14 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Honeypot Input Field
+
+There are numerous ways to add a honeypot field which is actually a good thing.
+This package does not try to provide a one size fits all solution because bots could easily optimize for that.
+Instead, you should simply add your honeypot fields exactly the same way that you would add any other form field.
+However, there are some things to consider:
+
+- Hide your honeypot field in a non-obvious way (e.g. repositioning via `first-child` CSS selector)
+- Add the `tabindex="-1"` attribute so users don't navigate to the honeypot field using the `Tab` key
+- Add the `autocomplete="off"` attribute when applicable so browsers don't fill out the honeypot field

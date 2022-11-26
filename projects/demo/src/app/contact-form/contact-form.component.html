@@ -9,6 +9,16 @@
     <mat-card-content>
       <div class="row">
         <div class="col">
+          <mat-checkbox
+            formControlName="honey"
+            tabindex="-1"
+          >
+            Use my data however you like.
+          </mat-checkbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
           <mat-form-field class="full-width">
             <input matInput placeholder="First name" formControlName="firstName">
             <mat-error *ngIf="contactForm.controls['firstName'].hasError('required')">

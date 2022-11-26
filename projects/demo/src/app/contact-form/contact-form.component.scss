@@ -10,6 +10,11 @@
 .row {
   display: flex;
   flex-direction: row;
+
+  &:first-child {
+    position: fixed;
+    top: -100vh;
+  }
 }
 
 .col {
