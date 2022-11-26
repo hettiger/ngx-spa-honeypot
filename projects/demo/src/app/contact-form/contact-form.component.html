@@ -1,4 +1,10 @@
-<form [formGroup]="contactForm" novalidate (ngSubmit)="onSubmit()">
+<form
+  action="https://api.domain.tld/api/endpoint"
+  novalidate
+  #form
+  [formGroup]="contactForm"
+  (ngSubmit)="onSubmit(form.action, contactForm.value)"
+>
   <mat-card>
     <mat-card-title>
       Contact Form

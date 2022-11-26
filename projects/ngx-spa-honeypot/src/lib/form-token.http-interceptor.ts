@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { finalize, Observable, tap } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
+import { hasHttpHeaders } from './predicates';
 
 type NextFormTokenCallback = (token: null | string) => void;
 
@@ -30,14 +31,6 @@ export class FormTokenHttpInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Resets interceptor to be ready for the next request
-   */
-  reset() {
-    this.formToken = null;
-    this.nextFormToken = null;
-  }
-
-  /**
    * Adds a form token to the request when present;
    * communicates back the next form token.
    */
@@ -54,12 +47,31 @@ export class FormTokenHttpInterceptor implements HttpInterceptor {
       finalize(() => {
         this.reset();
       }),
+      catchError(error => {
+        this.communicateBackNextFormToken(error);
+        return throwError(error);
+      }),
       tap(response => {
-        if (response instanceof HttpResponse && this.nextFormToken) {
-          this.nextFormToken(response.headers.get('spa-form-token'));
-        }
+        this.communicateBackNextFormToken(response);
       }),
     );
+  }
+
+  /**
+   * Resets interceptor to be ready for the next request
+   */
+  protected reset() {
+    this.formToken = null;
+    this.nextFormToken = null;
+  }
+
+  /**
+   * Communicates back the next form token provided by the given `response`.
+   */
+  protected communicateBackNextFormToken(response: unknown) {
+    if (hasHttpHeaders(response) && this.nextFormToken) {
+      this.nextFormToken(response.headers.get('spa-form-token'));
+    }
   }
 
 }

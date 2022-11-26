@@ -2,11 +2,21 @@ import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
+import { HttpClient } from '@angular/common/http';
+import { hasHttpHeaders } from './predicates';
 
 @Directive({
-  selector: 'form'
+  selector: 'form[action]'
 })
 export class FormTokenDirective implements OnInit, OnDestroy {
+
+  protected get method() {
+    return this.formElement.nativeElement.method || 'post';
+  }
+
+  protected get action() {
+    return this.formElement.nativeElement.action;
+  }
 
   protected formToken: null | string = null;
 
@@ -14,12 +24,13 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   protected unsubscribe$ = new Subject<boolean>();
 
   constructor(
+    protected formElement: ElementRef<HTMLFormElement>,
     protected formGroup: FormGroupDirective,
-    protected el: ElementRef<HTMLFormElement>,
+    protected http: HttpClient,
     protected httpInterceptor: FormTokenHttpInterceptor,
   ) {
     this.submit$ = fromEvent<SubmitEvent>(
-      this.el.nativeElement,
+      formElement.nativeElement,
       'submit',
       { capture: true }, // capture makes sure we can intercept before `ngSubmit` does fire
     );
@@ -41,7 +52,19 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   }
 
   protected requestFormToken() {
-    this.formToken = 'form-token-fake';
+    this.http.request(this.method, this.action, {
+      headers: { 'spa-form-token': '' },
+      observe: 'response'
+    }).subscribe({
+      next: this.setFormToken.bind(this),
+      error: this.setFormToken.bind(this),
+    });
+  }
+
+  protected setFormToken(response: unknown) {
+    if (hasHttpHeaders(response)) {
+      this.formToken = response.headers.get('spa-form-token');
+    }
   }
 
   protected sendFormTokenOnNextRequest() {

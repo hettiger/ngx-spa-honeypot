@@ -22,7 +22,7 @@ export class ContactFormComponent {
     private http: HttpClient,
   ) {}
 
-  onSubmit() {
-    this.http.post(location.href, {}).subscribe();
+  onSubmit(action: string, value: typeof this.contactForm.value) {
+    this.http.post(action, { body: value }).subscribe();
   }
 }
