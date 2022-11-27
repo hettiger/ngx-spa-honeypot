@@ -23,6 +23,6 @@ export class ContactFormComponent {
   ) {}
 
   onSubmit(action: string, value: typeof this.contactForm.value) {
-    this.http.post(action, { body: value }).subscribe();
+    this.http.post(action, value).subscribe();
   }
 }
