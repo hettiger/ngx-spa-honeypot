@@ -36,3 +36,22 @@ However, there are some things to consider:
 - Hide your honeypot field in a non-obvious way (e.g. repositioning via `first-child` CSS selector)
 - Add the `tabindex="-1"` attribute so users don't navigate to the honeypot field using the `Tab` key
 - Add the `autocomplete="off"` attribute when applicable so browsers don't fill out the honeypot field
+
+## Time Based Anti SPAM Protection
+
+Time based anti SPAM protection relies on a custom HTTP header that needs to be sent with each form request.
+This package uses a directive and an HTTP interceptor to make this as convenient as possible.
+Simply add the `action` attribute to each form element that should be protected:
+
+```angular2html
+<form
+  action="https://api.domain.tld/api/endpoint" 
+  novalidate
+  (ngSubmit)="onSubmit()"
+>
+    <!-- Form Controls … -->
+</form>
+```
+
+> Don't forget to protect the API endpoint using the `form` or `form.token` middleware.
+> (Or using the `@requireFormToken` directive when you're calling a Lighthouse GraphQL API.)
