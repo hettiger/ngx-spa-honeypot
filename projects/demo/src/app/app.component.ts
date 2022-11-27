@@ -20,6 +20,8 @@ export class AppComponent {
       shareReplay()
     );
 
+  graphQLMode = false;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private titleService: Title,
