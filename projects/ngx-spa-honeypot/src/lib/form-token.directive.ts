@@ -1,6 +1,6 @@
 import { Directive, ElementRef, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormGroupDirective, NgForm } from '@angular/forms';
-import { fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
+import { filter, fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 import { HttpClient } from '@angular/common/http';
 import { hasHttpHeaders } from './predicates';
@@ -38,13 +38,20 @@ export class FormTokenDirective implements OnInit, OnDestroy {
     this.submit$ = fromEvent<SubmitEvent>(
       formElement.nativeElement,
       'submit',
-      { capture: true }, // capture makes sure we can intercept before `ngSubmit` does fire
+      { capture: true }, // The `capture` option makes sure we can intercept before `ngSubmit` does fire.
     );
   }
 
   ngOnInit(): void {
     this.form?.valueChanges?.pipe(
       takeUntil(this.unsubscribe$),
+      filter(
+        // Angular may initialize control values with empty strings.
+        // It emits one `valueChanges` event per initialized control.
+        // These events are not a result of user interaction.
+        // Therefore, they must be discarded.
+        formValue => Object.values(formValue).some(controlValue => controlValue !== '')
+      ),
       take(1),
     ).subscribe(this.requestFormToken.bind(this));
 

@@ -19,4 +19,3 @@ export class TemplateDrivenFormComponent {
 }
 
 // TODO: Template is missing validation rules
-// TODO: valueChanges seems to fire on page load somehow
