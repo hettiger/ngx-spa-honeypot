@@ -1,5 +1,5 @@
-import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { FormGroupDirective } from '@angular/forms';
+import { Directive, ElementRef, OnDestroy, OnInit, Optional } from '@angular/core';
+import { FormGroupDirective, NgForm } from '@angular/forms';
 import { fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +19,10 @@ export class FormTokenDirective implements OnInit, OnDestroy {
     return this.formElement.nativeElement.action;
   }
 
+  protected get form() {
+    return this.formGroup || this.ngForm?.form;
+  }
+
   protected readonly formToken = new FormToken();
 
   protected submit$: Observable<SubmitEvent>;
@@ -26,9 +30,10 @@ export class FormTokenDirective implements OnInit, OnDestroy {
 
   constructor(
     protected formElement: ElementRef<HTMLFormElement>,
-    protected formGroup: FormGroupDirective,
     protected http: HttpClient,
     protected httpInterceptor: FormTokenHttpInterceptor,
+    @Optional() protected formGroup?: FormGroupDirective,
+    @Optional() protected ngForm?: NgForm,
   ) {
     this.submit$ = fromEvent<SubmitEvent>(
       formElement.nativeElement,
@@ -38,7 +43,7 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.formGroup.valueChanges?.pipe(
+    this.form?.valueChanges?.pipe(
       takeUntil(this.unsubscribe$),
       take(1),
     ).subscribe(this.requestFormToken.bind(this));

@@ -1,21 +1,32 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ContactFormComponent } from './contact-form/contact-form.component';
+import { RouterModule, Routes, TitleStrategy } from '@angular/router';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
+import { AppTitleStrategy } from './app-title-strategy';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'contact-form'
+    redirectTo: 'reactive-form'
   },
   {
-    path: 'contact-form',
-    component: ContactFormComponent
+    path: 'reactive-form',
+    component: ReactiveFormComponent,
+    title: 'Reactive Form'
+  },
+  {
+    path: 'template-driven-form',
+    component: TemplateDrivenFormComponent,
+    title: 'Template Driven Form'
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
+  ]
 })
 export class AppRoutingModule { }

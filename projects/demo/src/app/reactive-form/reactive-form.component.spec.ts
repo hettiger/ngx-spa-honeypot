@@ -7,15 +7,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { ContactFormComponent } from './contact-form.component';
+import { ReactiveFormComponent } from './reactive-form.component';
 
-describe('FormComponent', () => {
-  let component: ContactFormComponent;
-  let fixture: ComponentFixture<ContactFormComponent>;
+describe('ReactiveFormComponent', () => {
+  let component: ReactiveFormComponent;
+  let fixture: ComponentFixture<ReactiveFormComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContactFormComponent ],
+      declarations: [ ReactiveFormComponent ],
       imports: [
         NoopAnimationsModule,
         ReactiveFormsModule,
@@ -29,7 +29,7 @@ describe('FormComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContactFormComponent);
+    fixture = TestBed.createComponent(ReactiveFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

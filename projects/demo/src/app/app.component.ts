@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { delay, Observable, startWith } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mh-root',
@@ -10,12 +12,24 @@ import { map, shareReplay } from 'rxjs/operators';
 })
 export class AppComponent {
 
+  title$: Observable<string>;
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private titleService: Title,
+    private router: Router,
+  ) {
+    this.title$ = router.events.pipe(
+      startWith(titleService.getTitle()),
+      delay(0),
+      map(() => titleService.getTitle()),
+    );
+  }
 
 }

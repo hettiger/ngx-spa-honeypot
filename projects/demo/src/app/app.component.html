@@ -5,7 +5,12 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="contact-form">Contact Form</a>
+      <a class="sidenav__link" mat-list-item routerLink="reactive-form" routerLinkActive="sidenav__link--active">
+        Reactive Form
+      </a>
+      <a class="sidenav__link" mat-list-item routerLink="template-driven-form" routerLinkActive="sidenav__link--active">
+        Template Driven Form
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -18,7 +23,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">Menu</mat-icon>
       </button>
-      <span>SPA Honeypot package Demo</span>
+      <span>{{ title$ | async }}</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

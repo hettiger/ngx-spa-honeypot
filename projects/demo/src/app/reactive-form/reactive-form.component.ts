@@ -3,11 +3,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'mh-contact-form',
-  templateUrl: './contact-form.component.html',
-  styleUrls: ['./contact-form.component.scss'],
+  selector: 'mh-reactive-form',
+  templateUrl: './reactive-form.component.html',
+  styleUrls: ['./reactive-form.component.scss'],
 })
-export class ContactFormComponent {
+export class ReactiveFormComponent {
+
   contactForm = this.fb.group({
     honey: [null],
     firstName: [null, Validators.required],
@@ -25,4 +26,5 @@ export class ContactFormComponent {
   onSubmit(action: string, value: typeof this.contactForm.value) {
     this.http.post(action, value).subscribe();
   }
+
 }

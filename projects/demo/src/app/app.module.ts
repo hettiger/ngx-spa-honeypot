@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LayoutModule } from '@angular/cdk/layout';
@@ -18,13 +18,15 @@ import { MatListModule } from '@angular/material/list';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ContactFormComponent } from './contact-form/contact-form.component';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { NgxSpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-honeypot.module';
+import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactFormComponent
+    ReactiveFormComponent,
+    TemplateDrivenFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,8 @@ import { NgxSpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-
     HttpClientModule,
     NgxSpaHoneypotModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
@@ -42,7 +46,6 @@ import { NgxSpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule,
     MatCheckboxModule,
   ],
   providers: [],
