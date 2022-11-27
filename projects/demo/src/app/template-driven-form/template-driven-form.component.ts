@@ -17,5 +17,3 @@ export class TemplateDrivenFormComponent {
   }
 
 }
-
-// TODO: Template is missing validation rules

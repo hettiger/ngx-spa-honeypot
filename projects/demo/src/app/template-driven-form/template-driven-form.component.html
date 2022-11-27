@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="First name" name="firstName" ngModel #firstName="ngModel">
+            <input matInput placeholder="First name" name="firstName" required ngModel #firstName="ngModel">
             <mat-error *ngIf="firstName.hasError('required')">
               First name is <strong>required</strong>
             </mat-error>
@@ -35,7 +35,7 @@
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Last name" name="lastName" ngModel #lastName="ngModel">
+            <input matInput placeholder="Last name" name="lastName" required ngModel #lastName="ngModel">
             <mat-error *ngIf="lastName.hasError('required')">
               Last name is <strong>required</strong>
             </mat-error>
@@ -45,7 +45,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Email" name="email" required ngModel #email="ngModel">
+            <input matInput placeholder="Email" name="email" required email ngModel #email="ngModel">
             <mat-error *ngIf="email.hasError('required')">
               Email is <strong>required</strong>
             </mat-error>
@@ -58,7 +58,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Subject" name="subject" ngModel #subject="ngModel">
+            <input matInput placeholder="Subject" name="subject" required ngModel #subject="ngModel">
             <mat-error *ngIf="subject.hasError('required')">
               Subject is <strong>required</strong>
             </mat-error>
@@ -68,7 +68,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <textarea matInput cdkTextareaAutosize placeholder="Message" name="message" ngModel #message="ngModel"></textarea>
+            <textarea matInput cdkTextareaAutosize placeholder="Message" name="message" required ngModel #message="ngModel"></textarea>
             <mat-error *ngIf="message.hasError('required')">
               Message is <strong>required</strong>
             </mat-error>
