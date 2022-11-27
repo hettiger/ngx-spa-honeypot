@@ -81,7 +81,7 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   }
 
   protected sendFormTokenOnNextRequest() {
-    this.httpInterceptor.sendFormTokenHeaderWithNextRequest(this.formToken);
+    this.httpInterceptor.sendFormTokenOnNextRequest(this.formToken);
   }
 
 }

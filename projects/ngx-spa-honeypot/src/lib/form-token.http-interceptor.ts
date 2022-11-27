@@ -15,7 +15,7 @@ export class FormTokenHttpInterceptor implements HttpInterceptor {
   /**
    * Updates `this.formToken` so the provided `token` is used to manipulate the next request
    */
-  sendFormTokenHeaderWithNextRequest(token: FormToken) {
+  sendFormTokenOnNextRequest(token: FormToken) {
     this.formToken = token;
   }
 
