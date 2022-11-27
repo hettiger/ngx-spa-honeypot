@@ -2,37 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
 import { hasHttpHeaders } from './predicates';
-
-type NextFormTokenCallback = (token: null | string) => void;
+import { FormToken } from './form-token';
 
 @Injectable()
 export class FormTokenHttpInterceptor implements HttpInterceptor {
 
   /**
-   * The form token that should be sent together with the next request
+   * The form token that is used to manipulate the next request
    */
-  protected formToken: null | string = null;
+  protected formToken: null | FormToken = null;
 
   /**
-   * Stores new form token in the `FormTokenDirective.formToken` property
-   *
-   * A form token is valid only once. => A subsequent request needs a new form token.
-   * Form token requests are answered with a new token automatically.
+   * Updates `this.formToken` so the provided `token` is used to manipulate the next request
    */
-  protected nextFormToken: null | NextFormTokenCallback = null;
-
-  /**
-   * Sets a form token that will be sent with the next request;
-   * registers a callback to communicate back the next form token.
-   */
-  setFormToken(token: string, next: NextFormTokenCallback) {
+  sendFormTokenHeaderWithNextRequest(token: FormToken) {
     this.formToken = token;
-    this.nextFormToken = next;
   }
 
   /**
    * Adds a form token to the request when present;
-   * communicates back the next form token.
+   * updates the form token value using the response headers;
+   * releases reference to the `FormToken` instance.
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!this.formToken) {
@@ -40,37 +30,43 @@ export class FormTokenHttpInterceptor implements HttpInterceptor {
     }
 
     const fromTokenRequest = req.clone({
-      headers: req.headers.set('spa-form-token', this.formToken),
+      headers: req.headers.set('spa-form-token', this.formToken.use()),
     });
 
     return next.handle(fromTokenRequest).pipe(
       finalize(() => {
-        this.reset();
+        this.releaseFormTokenInstance();
       }),
       catchError(error => {
-        this.communicateBackNextFormToken(error);
+        this.updateFormTokenValue(error);
         return throwError(error);
       }),
       tap(response => {
-        this.communicateBackNextFormToken(response);
+        this.updateFormTokenValue(response);
       }),
     );
   }
 
   /**
-   * Resets interceptor to be ready for the next request
+   * Releases the `this.formToken` reference
+   *
+   * Only one request should be manipulated after `this.sendFormTokenHeaderWithNextRequest()` has been called.
+   * This interceptor manipulates all requests as long as it has a reference to a `FormToken`.
+   * Therefore, some cleanup is required …
    */
-  protected reset() {
+  protected releaseFormTokenInstance() {
     this.formToken = null;
-    this.nextFormToken = null;
   }
 
   /**
-   * Communicates back the next form token provided by the given `response`.
+   * Updates `this.formToken` using a new token from the given `response`
+   *
+   * Form token requests are always answered with a new form token in the response headers.
+   * This allows for subsequent requests. (E.g. for subsequent attempts on server side validation errors.)
    */
-  protected communicateBackNextFormToken(response: unknown) {
-    if (hasHttpHeaders(response) && this.nextFormToken) {
-      this.nextFormToken(response.headers.get('spa-form-token'));
+  protected updateFormTokenValue(response: unknown) {
+    if (hasHttpHeaders(response)) {
+      this.formToken?.update(response.headers.get('spa-form-token'));
     }
   }
 

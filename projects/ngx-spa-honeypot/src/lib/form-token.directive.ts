@@ -4,6 +4,7 @@ import { fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 import { HttpClient } from '@angular/common/http';
 import { hasHttpHeaders } from './predicates';
+import { FormToken } from './form-token';
 
 @Directive({
   selector: 'form[action]'
@@ -18,7 +19,7 @@ export class FormTokenDirective implements OnInit, OnDestroy {
     return this.formElement.nativeElement.action;
   }
 
-  protected formToken: null | string = null;
+  protected readonly formToken = new FormToken();
 
   protected submit$: Observable<SubmitEvent>;
   protected unsubscribe$ = new Subject<boolean>();
@@ -56,24 +57,19 @@ export class FormTokenDirective implements OnInit, OnDestroy {
       headers: { 'spa-form-token': '' },
       observe: 'response'
     }).subscribe({
-      next: this.setFormToken.bind(this),
-      error: this.setFormToken.bind(this),
+      next: this.updateFormToken.bind(this),
+      error: this.updateFormToken.bind(this),
     });
   }
 
-  protected setFormToken(response: unknown) {
+  protected updateFormToken(response: unknown) {
     if (hasHttpHeaders(response)) {
-      this.formToken = response.headers.get('spa-form-token');
+      this.formToken.update(response.headers.get('spa-form-token'));
     }
   }
 
   protected sendFormTokenOnNextRequest() {
-    if (this.formToken) {
-      this.httpInterceptor.setFormToken(
-        this.formToken,
-        token => this.formToken = token,
-      );
-    }
+    this.httpInterceptor.sendFormTokenHeaderWithNextRequest(this.formToken);
   }
 
 }
