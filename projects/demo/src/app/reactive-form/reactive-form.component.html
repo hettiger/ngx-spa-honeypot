@@ -1,5 +1,5 @@
 <form
-  action="https://api.domain.tld/api/endpoint"
+  [action]="action$ | async"
   novalidate
   #form
   [formGroup]="contactForm"
