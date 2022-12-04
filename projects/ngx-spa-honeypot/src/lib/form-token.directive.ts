@@ -1,19 +1,16 @@
-import { Directive, ElementRef, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormGroupDirective, NgForm } from '@angular/forms';
 import { filter, fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
 import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 import { HttpClient } from '@angular/common/http';
 import { hasHttpHeaders } from './predicates';
 import { FormToken } from './form-token';
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from './ngx-spa-honeypot.config';
 
 @Directive({
   selector: 'form[action]'
 })
 export class FormTokenDirective implements OnInit, OnDestroy {
-
-  protected get method() {
-    return this.formElement.nativeElement.method || 'post';
-  }
 
   protected get action() {
     return this.formElement.nativeElement.action;
@@ -34,6 +31,7 @@ export class FormTokenDirective implements OnInit, OnDestroy {
     protected httpInterceptor: FormTokenHttpInterceptor,
     @Optional() protected formGroup?: FormGroupDirective,
     @Optional() protected ngForm?: NgForm,
+    @Optional() @Inject(SPA_HONEYPOT_CONFIG) protected config?: SpaHoneypotConfig,
   ) {
     this.submit$ = fromEvent<SubmitEvent>(
       formElement.nativeElement,
@@ -65,7 +63,12 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   }
 
   protected requestFormToken() {
-    this.http.request(this.method, this.action, {
+    const action = new URL(this.action);
+    action.search = '';
+    action.hash = '';
+    action.pathname = (this.config?.domainTokenRoutePathMap || {})[action.hostname] ?? 'spa-form-token';
+
+    this.http.post(action.href, {}, {
       headers: { 'spa-form-token': '' },
       observe: 'response'
     }).subscribe({

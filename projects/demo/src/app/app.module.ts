@@ -26,6 +26,7 @@ import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { NgxSpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-honeypot.module';
 import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-honeypot.config';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
   ],
   providers: [
+    {
+      provide: SPA_HONEYPOT_CONFIG,
+      useFactory: (): SpaHoneypotConfig => ({
+        domainTokenRoutePathMap: {
+          'api.domain.tld': 'token'
+        },
+      }),
+    },
     {
       provide: APOLLO_OPTIONS,
       useFactory(httpLink: HttpLink) {

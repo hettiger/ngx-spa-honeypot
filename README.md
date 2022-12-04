@@ -26,6 +26,33 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
+## Configuration
+
+Without any customization on the backend configuration can be skipped entirely.
+However, a configuration may be required when customization takes place.
+Apply your configuration as follows:
+
+```typescript
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from 'ngx-spa-honeypot';
+
+@NgModule({
+  providers: [
+    {
+      provide: SPA_HONEYPOT_CONFIG,
+      useFactory: (): SpaHoneypotConfig => ({
+        domainTokenRoutePathMap: {
+          'api.domain.tld': 'token',
+        },
+      }),
+    },
+  ],
+  // …
+})
+export class AppModule {}
+```
+
+> See `SpaHoneypotConfig` for documentation on individual configuration values. 
+
 ## Honeypot Input Field
 
 There are numerous ways to add a honeypot field which is actually a good thing.
