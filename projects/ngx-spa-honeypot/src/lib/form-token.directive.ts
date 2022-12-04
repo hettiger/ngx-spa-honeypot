@@ -5,7 +5,7 @@ import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
 import { HttpClient } from '@angular/common/http';
 import { hasHttpHeaders } from './predicates';
 import { FormToken } from './form-token';
-import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from './ngx-spa-honeypot.config';
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from './spa-honeypot.config';
 
 @Directive({
   selector: 'form[action]'

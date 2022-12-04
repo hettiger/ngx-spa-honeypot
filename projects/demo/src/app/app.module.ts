@@ -23,10 +23,10 @@ import { InMemoryCache } from '@apollo/client/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
-import { NgxSpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-honeypot.module';
+import { SpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.module';
 import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/ngx-spa-honeypot.config';
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.config';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,7 @@ import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypo
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgxSpaHoneypotModule,
+    SpaHoneypotModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,

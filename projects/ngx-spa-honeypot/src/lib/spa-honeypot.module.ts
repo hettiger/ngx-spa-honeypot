@@ -20,4 +20,4 @@ import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
     FormTokenDirective,
   ]
 })
-export class NgxSpaHoneypotModule {}
+export class SpaHoneypotModule {}
