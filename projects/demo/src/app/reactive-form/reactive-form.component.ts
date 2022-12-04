@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import { SEND_CONTACT_REQUEST } from '../graphql/send-contact-request';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'mh-reactive-form',
@@ -33,8 +34,8 @@ export class ReactiveFormComponent {
   ) {
     this.action$ = this.graphQLMode.active$.pipe(
       map(active => active
-        ? 'https://api.domain.tld/graphql'
-        : 'https://api.domain.tld/api/endpoint'
+        ? environment.graphQLEndpoint
+        : environment.apiEndpoint
       ),
     );
   }

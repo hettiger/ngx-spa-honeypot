@@ -27,6 +27,7 @@ import { SpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/spa-honeypo
 import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.config';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -71,8 +72,8 @@ import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypo
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: 'https://api.domain.tld/graphql'
-          })
+            uri: environment.graphQLEndpoint,
+          }),
         }
       },
       deps: [HttpLink]

@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndpoint: 'https://api.domain.tld/api/endpoint',
+  graphQLEndpoint: 'https://api.domain.tld/graphql',
 };
 
 /*
