@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { GraphQLModeService } from '../graphql-mode/graphql-mode.service';
 
 @Component({
   selector: 'mh-reactive-form',
@@ -21,10 +22,15 @@ export class ReactiveFormComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
+    private graphQLMode: GraphQLModeService,
   ) {}
 
   onSubmit(action: string, value: typeof this.contactForm.value) {
-    this.http.post(action, value).subscribe();
+    if (this.graphQLMode.active) {
+      // TODO: Send GraphQL request
+    } else {
+      this.http.post(action, value).subscribe();
+    }
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { GraphQLModeService } from '../graphql-mode/graphql-mode.service';
 
 @Component({
   selector: 'mh-template-driven-form',
@@ -10,10 +11,15 @@ export class TemplateDrivenFormComponent {
 
   constructor(
     private http: HttpClient,
+    private graphQLMode: GraphQLModeService,
   ) {}
 
   onSubmit(action: string, value: any) {
-    this.http.post(action, value).subscribe();
+    if (this.graphQLMode.active) {
+      // TODO: Send GraphQL request
+    } else {
+      this.http.post(action, value).subscribe();
+    }
   }
 
 }

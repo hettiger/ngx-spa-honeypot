@@ -4,6 +4,7 @@ import { delay, Observable, startWith } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { GraphQLModeService } from './graphql-mode/graphql-mode.service';
 
 @Component({
   selector: 'mh-root',
@@ -20,9 +21,8 @@ export class AppComponent {
       shareReplay()
     );
 
-  graphQLMode = false;
-
   constructor(
+    public graphQLMode: GraphQLModeService,
     private breakpointObserver: BreakpointObserver,
     private titleService: Title,
     private router: Router,
