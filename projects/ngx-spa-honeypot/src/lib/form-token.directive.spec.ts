@@ -6,8 +6,6 @@ import { SpaHoneypotModule } from './spa-honeypot.module';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
-import { FormToken } from './form-token';
 
 @Component({
   template: `
@@ -26,7 +24,6 @@ describe('FormTokenManagerDirective', () => {
   let input: HTMLInputElement;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let httpInterceptor: FormTokenHttpInterceptor;
 
   beforeEach(waitForAsync(() => {
     fixture = TestBed.configureTestingModule({
@@ -37,7 +34,6 @@ describe('FormTokenManagerDirective', () => {
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
-    httpInterceptor = TestBed.inject(FormTokenHttpInterceptor);
 
     fixture.detectChanges();
 
@@ -45,8 +41,6 @@ describe('FormTokenManagerDirective', () => {
     form = formDebugElement.nativeElement;
     inputDebugElement = formDebugElement.query(By.css('input'));
     input = inputDebugElement.nativeElement;
-
-    spyOn(httpInterceptor, 'sendFormTokenOnNextRequest');
   }));
 
   afterEach(() => {
@@ -54,8 +48,8 @@ describe('FormTokenManagerDirective', () => {
   });
 
   it('does not request initial form token until first input', () => {
-    expectNoFormTokenRequest();
-  })
+    expect().nothing();
+  });
 
   it('requests initial form token on first input', () => {
     enterText('example');
@@ -65,13 +59,64 @@ describe('FormTokenManagerDirective', () => {
 
   it('adds form token header to submit requests', () => {
     const expectedToken = 'fake-token';
+
     enterText('example');
-    expectFormTokenRequest(expectedToken);
 
-    submitForm();
+    expectFormTokenRequest({
+      responseToken: expectedToken,
+    });
 
-    expect(httpInterceptor.sendFormTokenOnNextRequest)
-      .toHaveBeenCalledOnceWith(new FormToken(expectedToken));
+    submitForm(form.action);
+
+    expectFormTokenRequest({
+      url: form.action,
+      requestToken: expectedToken,
+    });
+  });
+
+  it('uses fresh form token on subsequent requests', () => {
+    const expectedInitialToken = 'fake-token';
+    const expectedSubsequentToken = 'subsequent-fake-token';
+
+    enterText('example');
+
+    expectFormTokenRequest({
+      responseToken: expectedInitialToken,
+    });
+
+    submitForm(form.action);
+
+    expectFormTokenRequest({
+      url: form.action,
+      requestToken: expectedInitialToken,
+      responseToken: expectedSubsequentToken,
+    });
+
+    submitForm(form.action);
+
+    expectFormTokenRequest({
+      url: form.action,
+      requestToken: expectedSubsequentToken,
+    });
+  });
+
+  it('is self-healing', () => {
+    const expectedToken = 'fake-token';
+
+    submitForm(form.action);
+
+    expectFormTokenRequest({
+      url: form.action,
+      requestToken: '',
+      responseToken: expectedToken,
+    });
+
+    submitForm(form.action);
+
+    expectFormTokenRequest({
+      url: form.action,
+      requestToken: expectedToken,
+    });
   });
 
   function enterText(text: string) {
@@ -80,28 +125,29 @@ describe('FormTokenManagerDirective', () => {
     fixture.detectChanges();
   }
 
-  function expectNoFormTokenRequest() {
-    httpTestingController.expectNone(
-      'https://domain.tld/spa-form-token'
-    );
-
-    expect().nothing();
-  }
-
-  function expectFormTokenRequest(token = 'token-fake') {
+  function expectFormTokenRequest({
+    url = 'https://domain.tld/spa-form-token',
+    requestToken = '',
+    responseToken = 'form-token-fake',
+  } = {}) {
     const request = httpTestingController.expectOne(
-      'https://domain.tld/spa-form-token'
+      req => {
+        expect(req.url).toBe(url);
+        expect(req.headers.get('spa-form-token')).toBe(requestToken);
+
+        return true;
+      }
     );
 
     request.flush({}, {
-      headers: { 'spa-form-token': token },
+      headers: { 'spa-form-token': responseToken },
     });
-
-    expect().nothing();
   }
 
-  function submitForm() {
+  function submitForm(url: string) {
     form.dispatchEvent(new Event('submit'));
     fixture.detectChanges();
+
+    httpClient.post(url, {}).subscribe();
   }
 });
