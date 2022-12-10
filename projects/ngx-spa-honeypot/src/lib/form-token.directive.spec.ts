@@ -6,6 +6,7 @@ import { SpaHoneypotModule } from './spa-honeypot.module';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from './spa-honeypot.config';
 
 @Component({
   template: `
@@ -25,97 +26,134 @@ describe('FormTokenManagerDirective', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
-  beforeEach(waitForAsync(() => {
-    fixture = TestBed.configureTestingModule({
-      declarations: [ TestComponent ],
-      imports: [ SpaHoneypotModule, FormsModule, HttpClientTestingModule ],
-    })
-    .createComponent(TestComponent);
+  function applySharedSetup() {
+    beforeEach(waitForAsync(() => {
+      httpClient = TestBed.inject(HttpClient);
+      httpTestingController = TestBed.inject(HttpTestingController);
 
-    httpClient = TestBed.inject(HttpClient);
-    httpTestingController = TestBed.inject(HttpTestingController);
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
 
-    fixture.detectChanges();
+      formDebugElement = fixture.debugElement.query(By.directive(FormTokenDirective));
+      form = formDebugElement.nativeElement;
+      inputDebugElement = formDebugElement.query(By.css('input'));
+      input = inputDebugElement.nativeElement;
+    }));
 
-    formDebugElement = fixture.debugElement.query(By.directive(FormTokenDirective));
-    form = formDebugElement.nativeElement;
-    inputDebugElement = formDebugElement.query(By.css('input'));
-    input = inputDebugElement.nativeElement;
-  }));
+    afterEach(() => {
+      httpTestingController.verify();
+    });
+  }
 
-  afterEach(() => {
-    httpTestingController.verify();
+  describe('default config', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [ TestComponent ],
+        imports: [ SpaHoneypotModule, FormsModule, HttpClientTestingModule ],
+      });
+    });
+
+    applySharedSetup();
+
+    it('does not request initial form token until first input', () => {
+      expect().nothing();
+    });
+
+    it('requests initial form token on first input', () => {
+      enterText('example');
+
+      expectFormTokenRequest();
+    });
+
+    it('adds form token header to submit requests', () => {
+      const expectedToken = 'fake-token';
+
+      enterText('example');
+
+      expectFormTokenRequest({
+        responseToken: expectedToken,
+      });
+
+      submitForm(form.action);
+
+      expectFormTokenRequest({
+        url: form.action,
+        requestToken: expectedToken,
+      });
+    });
+
+    it('uses fresh form token on subsequent requests', () => {
+      const expectedInitialToken = 'fake-token';
+      const expectedSubsequentToken = 'subsequent-fake-token';
+
+      enterText('example');
+
+      expectFormTokenRequest({
+        responseToken: expectedInitialToken,
+      });
+
+      submitForm(form.action);
+
+      expectFormTokenRequest({
+        url: form.action,
+        requestToken: expectedInitialToken,
+        responseToken: expectedSubsequentToken,
+      });
+
+      submitForm(form.action);
+
+      expectFormTokenRequest({
+        url: form.action,
+        requestToken: expectedSubsequentToken,
+      });
+    });
+
+    it('is self-healing', () => {
+      const expectedToken = 'fake-token';
+
+      submitForm(form.action);
+
+      expectFormTokenRequest({
+        url: form.action,
+        requestToken: '',
+        responseToken: expectedToken,
+      });
+
+      submitForm(form.action);
+
+      expectFormTokenRequest({
+        url: form.action,
+        requestToken: expectedToken,
+      });
+    });
   });
 
-  it('does not request initial form token until first input', () => {
-    expect().nothing();
-  });
+  describe('custom config', () => {
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestComponent],
+        imports: [SpaHoneypotModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          {
+            provide: SPA_HONEYPOT_CONFIG,
+            useFactory: (): SpaHoneypotConfig => ({
+              domainTokenRoutePathMap: {
+                'domain.tld': 'token'
+              },
+            }),
+          }
+        ],
+      });
+    }));
 
-  it('requests initial form token on first input', () => {
-    enterText('example');
+    applySharedSetup();
 
-    expectFormTokenRequest();
-  });
+    it('requests initial form token on first input', () => {
+      enterText('example');
 
-  it('adds form token header to submit requests', () => {
-    const expectedToken = 'fake-token';
-
-    enterText('example');
-
-    expectFormTokenRequest({
-      responseToken: expectedToken,
-    });
-
-    submitForm(form.action);
-
-    expectFormTokenRequest({
-      url: form.action,
-      requestToken: expectedToken,
-    });
-  });
-
-  it('uses fresh form token on subsequent requests', () => {
-    const expectedInitialToken = 'fake-token';
-    const expectedSubsequentToken = 'subsequent-fake-token';
-
-    enterText('example');
-
-    expectFormTokenRequest({
-      responseToken: expectedInitialToken,
-    });
-
-    submitForm(form.action);
-
-    expectFormTokenRequest({
-      url: form.action,
-      requestToken: expectedInitialToken,
-      responseToken: expectedSubsequentToken,
-    });
-
-    submitForm(form.action);
-
-    expectFormTokenRequest({
-      url: form.action,
-      requestToken: expectedSubsequentToken,
-    });
-  });
-
-  it('is self-healing', () => {
-    const expectedToken = 'fake-token';
-
-    submitForm(form.action);
-
-    expectFormTokenRequest({
-      url: form.action,
-      requestToken: '',
-      responseToken: expectedToken,
-    });
-
-    submitForm(form.action);
-
-    expectFormTokenRequest({
-      url: form.action,
-      requestToken: expectedToken,
+      expectFormTokenRequest({
+        url: 'https://domain.tld/token'
+      });
     });
   });
 
