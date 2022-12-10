@@ -129,7 +129,7 @@ describe('FormTokenManagerDirective', () => {
   });
 
   describe('custom config', () => {
-    beforeEach(waitForAsync(() => {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent],
         imports: [SpaHoneypotModule, FormsModule, HttpClientTestingModule],
@@ -144,7 +144,7 @@ describe('FormTokenManagerDirective', () => {
           }
         ],
       });
-    }));
+    });
 
     applySharedSetup();
 
