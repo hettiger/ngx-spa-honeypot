@@ -38,6 +38,8 @@ import { environment } from '../environments/environment';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    // TODO: Implement Fake HttpClient
+    // TODO: Maybe even implement Cypress e2e tests
     HttpClientModule,
     SpaHoneypotModule,
     AppRoutingModule,
