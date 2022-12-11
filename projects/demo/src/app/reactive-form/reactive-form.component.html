@@ -77,7 +77,14 @@
     </mat-card-content>
     <mat-card-actions align="end">
       <button mat-raised-button type="reset">Reset</button>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="contactForm.invalid"
+      >
+        Submit
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>
