@@ -17,13 +17,21 @@ self.addEventListener('fetch', function(event) {
   if (/^https:\/\/api\.domain\.tld\//i.test(event.request.url)) {
     console.log('Fake API response from api.domain.tld using Service Worker')
     event.respondWith(new Response(
-      JSON.stringify({
-        errors: [
-          { message: 'Internal Server Error' }
-        ]
-      }),
+      /graphql/i.test(event.request.url)
+        ? JSON.stringify({
+          data: {
+            sendContactRequest: {
+              message: 'OK'
+            }
+          }
+        })
+        : JSON.stringify({
+          message: 'OK'
+        }),
       {
-        headers: { 'spa-form-token': 'form-token-' + ++i },
+        headers: {
+          'spa-form-token': 'form-token-' + ++i,
+        },
       }
     ));
   }
