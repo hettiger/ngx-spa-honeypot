@@ -17,7 +17,7 @@ import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from './spa-honeypot.config';
 })
 class TestComponent {}
 
-describe('FormTokenManagerDirective', () => {
+describe('FormTokenDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let formDebugElement: DebugElement;
   let form: HTMLFormElement;
