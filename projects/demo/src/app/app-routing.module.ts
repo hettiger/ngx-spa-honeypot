@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, TitleStrategy } from '@angular/router';
-import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
-import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
+import { ReactiveFormComponent } from './components/reactive-form/reactive-form.component';
+import { TemplateDrivenFormComponent } from './components/template-driven-form/template-driven-form.component';
 import { AppTitleStrategy } from './app-title-strategy';
 
 const routes: Routes = [

@@ -22,15 +22,15 @@ import { InMemoryCache } from '@apollo/client/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { ReactiveFormComponent } from './components/reactive-form/reactive-form.component';
 import { SpaHoneypotModule } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.module';
-import { TemplateDrivenFormComponent } from './template-driven-form/template-driven-form.component';
+import { TemplateDrivenFormComponent } from './components/template-driven-form/template-driven-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.config';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { HttpMessagesComponent } from './http-messages/http-messages.component';
-import { HttpObserverInterceptor } from './http-observer/http-observer.interceptor';
+import { HttpMessagesComponent } from './components/http-messages/http-messages.component';
+import { HttpObserverInterceptor } from './services/http-observer/http-observer.interceptor';
 
 @NgModule({
   declarations: [

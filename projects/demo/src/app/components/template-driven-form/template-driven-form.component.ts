@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { GraphQLModeService } from '../graphql-mode/graphql-mode.service';
+import { GraphQLModeService } from '../../services/graphql-mode/graphql-mode.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
-import { SEND_CONTACT_REQUEST } from '../graphql/send-contact-request';
-import { environment } from '../../environments/environment';
+import { SEND_CONTACT_REQUEST } from '../../graphql/send-contact-request';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'mh-template-driven-form',

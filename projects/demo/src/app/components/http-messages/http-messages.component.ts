@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpObserverInterceptor } from '../http-observer/http-observer.interceptor';
+import { HttpObserverInterceptor } from '../../services/http-observer/http-observer.interceptor';
 
 @Component({
   selector: 'mh-http-messages',
