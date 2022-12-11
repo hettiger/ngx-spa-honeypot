@@ -1,13 +1,15 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 import { TemplateDrivenFormComponent } from './template-driven-form.component';
+import { HttpMessagesComponent } from '../http-messages/http-messages.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('TemplateDrivenFormComponent', () => {
   let component: TemplateDrivenFormComponent;
@@ -15,15 +17,19 @@ describe('TemplateDrivenFormComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TemplateDrivenFormComponent ],
+      declarations: [
+        TemplateDrivenFormComponent,
+        HttpMessagesComponent,
+      ],
       imports: [
         NoopAnimationsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
+        HttpClientTestingModule,
+        ApolloTestingModule,
+        FormsModule,
         MatCardModule,
         MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
+        MatCheckboxModule,
+        MatButtonModule,
       ]
     }).compileComponents();
   }));

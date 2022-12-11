@@ -6,6 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -15,15 +18,20 @@ describe('AppComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [
+        AppComponent,
+      ],
       imports: [
         NoopAnimationsModule,
+        RouterTestingModule,
+        FormsModule,
         LayoutModule,
         MatButtonModule,
         MatIconModule,
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
+        MatSlideToggleModule,
       ]
     }).compileComponents();
   }));

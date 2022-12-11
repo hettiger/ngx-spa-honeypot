@@ -4,10 +4,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 
 import { ReactiveFormComponent } from './reactive-form.component';
+import { HttpMessagesComponent } from '../http-messages/http-messages.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('ReactiveFormComponent', () => {
   let component: ReactiveFormComponent;
@@ -15,15 +17,19 @@ describe('ReactiveFormComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReactiveFormComponent ],
+      declarations: [
+        ReactiveFormComponent,
+        HttpMessagesComponent,
+      ],
       imports: [
         NoopAnimationsModule,
+        HttpClientTestingModule,
+        ApolloTestingModule,
         ReactiveFormsModule,
-        MatButtonModule,
         MatCardModule,
         MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
+        MatCheckboxModule,
+        MatButtonModule,
       ]
     }).compileComponents();
   }));
