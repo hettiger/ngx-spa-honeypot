@@ -39,8 +39,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    // TODO: Implement Fake HttpClient
-    // TODO: Maybe even implement Cypress e2e tests
     HttpClientModule,
     SpaHoneypotModule,
     AppRoutingModule,
@@ -59,8 +57,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MatCardModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
+    ServiceWorkerModule.register('service-worker.js', {
+      enabled: true,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'

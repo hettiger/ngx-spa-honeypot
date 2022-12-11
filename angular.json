@@ -25,6 +25,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/demo/src/favicon.ico",
+              "projects/demo/src/service-worker.js",
               "projects/demo/src/assets",
               "projects/demo/src/manifest.webmanifest"
             ],
