@@ -5,7 +5,7 @@ import { hasHttpHeaders } from './predicates';
 import { FormToken } from './form-token';
 
 @Injectable()
-export class FormTokenHttpInterceptor implements HttpInterceptor {
+export class FormTokenInterceptor implements HttpInterceptor {
 
   /**
    * The form token that is used to manipulate the next request

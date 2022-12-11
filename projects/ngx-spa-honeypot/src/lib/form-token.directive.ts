@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormGroupDirective, NgForm } from '@angular/forms';
 import { filter, fromEvent, Observable, Subject, take, takeUntil } from 'rxjs';
-import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
+import { FormTokenInterceptor } from './form-token.interceptor';
 import { HttpClient } from '@angular/common/http';
 import { hasHttpHeaders } from './predicates';
 import { FormToken } from './form-token';
@@ -28,7 +28,7 @@ export class FormTokenDirective implements OnInit, OnDestroy {
   constructor(
     protected formElement: ElementRef<HTMLFormElement>,
     protected http: HttpClient,
-    protected httpInterceptor: FormTokenHttpInterceptor,
+    protected httpInterceptor: FormTokenInterceptor,
     @Optional() protected formGroup?: FormGroupDirective,
     @Optional() protected ngForm?: NgForm,
     @Optional() @Inject(SPA_HONEYPOT_CONFIG) protected config?: SpaHoneypotConfig,

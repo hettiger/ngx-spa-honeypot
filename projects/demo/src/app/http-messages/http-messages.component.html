@@ -1,0 +1,18 @@
+<ng-container *ngIf="messages$ | async as messages">
+  <h2 class="messages__header" *ngIf="messages.length">
+    HTTP Messages
+  </h2>
+  <mat-card class="messages__card" *ngFor="let message of messages">
+    <mat-card-title>
+      {{ message.type }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ message.createdAt | date:'mediumTime' }}
+    </mat-card-subtitle>
+    <mat-card-content>
+      <p>{{ message.url }}</p>
+      <pre [innerText]="message.headers"></pre>
+      <pre [innerText]="message.body | json"></pre>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

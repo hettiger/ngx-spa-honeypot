@@ -1,0 +1,14 @@
+.messages {
+  &__header {
+    margin-top: 60px;
+  }
+
+  &__card {
+    margin-top: 20px;
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+}

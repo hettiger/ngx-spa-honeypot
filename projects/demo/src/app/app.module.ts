@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -29,12 +29,15 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SPA_HONEYPOT_CONFIG, SpaHoneypotConfig } from '../../../ngx-spa-honeypot/src/lib/spa-honeypot.config';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { HttpMessagesComponent } from './http-messages/http-messages.component';
+import { HttpObserverInterceptor } from './http-observer/http-observer.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     ReactiveFormComponent,
     TemplateDrivenFormComponent,
+    HttpMessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,12 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         }
       },
       deps: [HttpLink]
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useExisting: HttpObserverInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [
     AppComponent

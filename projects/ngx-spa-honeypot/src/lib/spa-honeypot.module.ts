@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormTokenDirective } from './form-token.directive';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
+import { FormTokenInterceptor } from './form-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -9,10 +9,10 @@ import { FormTokenHttpInterceptor } from './form-token.http-interceptor';
   ],
   imports: [],
   providers: [
-    FormTokenHttpInterceptor,
+    FormTokenInterceptor,
     {
       provide: HTTP_INTERCEPTORS,
-      useExisting: FormTokenHttpInterceptor,
+      useExisting: FormTokenInterceptor,
       multi: true,
     },
   ],
