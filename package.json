@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve demo",
+    "prebuild": "cp ./*.md ./projects/ngx-spa-honeypot",
     "build": "ng build",
+    "postbuild": "rm ./projects/ngx-spa-honeypot/*.md",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:demo": "ng test demo",
+    "prepublish": "npm run build",
+    "publish": "cd dist/ngx-spa-honeypot && npm publish"
   },
   "private": true,
   "dependencies": {

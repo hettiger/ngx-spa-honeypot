@@ -1,6 +1,15 @@
 {
-  "name": "ngx-spa-honeypot",
+  "name": "@hettiger/ngx-spa-honeypot",
+  "description": "Angular Frontend Companion Library for hettiger/spa-honeypot",
+  "keywords": ["angular", "spa", "honeypot", "companion", "library"],
   "version": "0.0.1",
+  "author": {
+    "name": "Martin Hettiger",
+    "url": "https://www.hettiger.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/hettiger/ngx-spa-honeypot",
+  "readmeFilename": "README.md",
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0"
